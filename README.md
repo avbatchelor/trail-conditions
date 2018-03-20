@@ -14,7 +14,7 @@ The following document is a summary of my trail conditions side project.
 
 ## Motivation & Project Goals
 
-![alt text](\images\trail_example.jpg)
+![alt text](https://github.com/avbatchelor/trail-conditions/blob/master/images/trail_example.JPG)
 
 
 
