@@ -14,41 +14,15 @@ The following document is a summary of my trail conditions side project.
 
 ## Motivation & Project Goals
 
-![alt text](images\trail_example.jpg)
+![alt text](\images\trail_example.jpg)
 
 
 
-# Scraping the data
-
-
-```python
-# Example code 
-# Correct duplicate states 
-reports.state = reports.state.str.replace("NHNH","NH")
-reports.state = reports.state.str.replace("CTCT","CT")
-reports.state = reports.state.str.replace("MEME","ME")
-reports.state = reports.state.str.replace("MAMA","MA")
-reports.state = reports.state.str.replace("MARI","MA")
-```
-
-
-    ---------------------------------------------------------------------------
-
-    NameError                                 Traceback (most recent call last)
-
-    <ipython-input-2-8d5adfed9079> in <module>()
-          1 # Example code
-          2 # Correct duplicate states
-    ----> 3 reports.state = reports.state.str.replace("NHNH","NH")
-          4 reports.state = reports.state.str.replace("CTCT","CT")
-          5 reports.state = reports.state.str.replace("MEME","ME")
-    
-
-    NameError: name 'reports' is not defined
-
+## Scraping the data
 
 ## How to use this repository
-Project Organization
+
+## Project Organization
 ------------
 
     ├── LICENSE
