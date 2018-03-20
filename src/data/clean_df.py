@@ -8,6 +8,8 @@ Created on Sat Mar 17 10:48:31 2018
 #%% Import packages 
 import pandas as pd 
 import os
+from nltk.tokenize import RegexpTokenizer
+import os
 
 #%% Read in large dataframe
 os.chdir('C:\\Users\\Alex\\Documents\\GitHub\\trail-conditions\\data\\raw')
@@ -36,20 +38,40 @@ def standardize_text(df, text_field):
     df[text_field] = df[text_field].str.lower()
     return df
 
-#%% Create columns for standardized text and categorized text
-reports.insert(loc=7,column='txtcleaned_water_crossings',value=reports['water_crossings'])
-reports.insert(loc=8,column='water_cat',value=0)
-reports = standardize_text(reports, "txtcleaned_water_crossings")
-
-#Tokenize your text by separating it into individual words
-
-#Consider combining misspelled or alternately spelled words to a single representation (e.g. “cool”/”kewl”/”cooool”)
-
-#Consider lemmatization (reduce words such as “am”, “are”, and “is” to a common form such as “be”)
-
 #%% 
+def clean_peaks(df,text_field):
+    df[text_field] = df[text_field].str.replace(r"Mt. ", "")
+    df[text_field] = df[text_field].str.replace(r"Mt ", "")
+    df[text_field] = df[text_field].str.replace(r" Mountain", "")
+    df[text_field] = df[text_field].str.replace(r"Mount ", "")
+    # Remove state
+    df[text_field] = df[text_field].str.replace("NH|ME|VT|MA|RI|CT", "")
+    # Remove text in brackets 
+    df[text_field] = df[text_field].str.replace("\(.+\)","")
+    # Replace and with a comma
+    df[text_field] = df[text_field].str.replace(" and ",",")
+    # lowercase
+    df[text_field] = df[text_field].str.lower()
+    return df
+    
+
+#%% Clean water crossings
+    
+# Create columns for standardized text and categorized text
+reports.insert(loc=7,column='txtcleaned_water_crossings',value=reports['water_crossings'])
+reports.insert(loc=8,column='water_class',value=0)
+
+# Clean text 
+reports = standardize_text(reports, "txtcleaned_water_crossings")
+ 
+# Tokenize text 
+space_tokenizer = RegexpTokenizer(r'\w+')
+reports["water_tokens"] = reports["txtcleaned_water_crossings"].apply(space_tokenizer.tokenize)
+
+# Look at most common crossing reports 
 common_crossing_reports = reports['txtcleaned_water_crossings'].value_counts()
 
+# These are some common answers:
 # no comment
 # none | none. | n a | none via this route.  | no crossings | na
 # no issues | no problems | no issues. | easy | not an issue | all easy | no problem | no problems.
@@ -57,21 +79,60 @@ common_crossing_reports = reports['txtcleaned_water_crossings'].value_counts()
 # rock hoppable | rock hops | rock hopping
 
 
+sum(reports.water_crossings.str.count('tough'))
 
 
 #%% 
-from nltk.stem.snowball import SnowballStemmer
+#Consider combining misspelled or alternately spelled words to a single representation (e.g. “cool”/”kewl”/”cooool”)
 
-stemmer = SnowballStemmer("english")
-stemmer.stem('no issues')
- 
-from nltk.stem import WordNetLemmatizer
+#Consider lemmatization (reduce words such as “am”, “are”, and “is” to a common form such as “be”)
 
-lemmatizer = WordNetLemmatizer()
+#from nltk.stem.snowball import SnowballStemmer
+#
+#stemmer = SnowballStemmer("english")
+#stemmer.stem('no issues')
+# 
+#from nltk.stem import WordNetLemmatizer
+#
+#lemmatizer = WordNetLemmatizer()
+#
+#lemmatizer.lemmatize('hoppable')
 
-lemmatizer.lemmatize('hoppable')
+
+#%% Analyze peaks 
+
+# Empty columns
+reports.insert(loc=2,column='clean_peaks',value=reports['peaks'])
+reports.insert(loc=3,column='peak_tokens',value=0)
+
+# Make tokenizer
+comma_space_tokenizer = RegexpTokenizer('\,\s', gaps=True)
+
+# Clean the peaks column
+reports = clean_peaks(reports, "clean_peaks")
+reports["peak_tokens"] = reports["clean_peaks"].apply(comma_space_tokenizer.tokenize)
+
+# Make an attempt column
+reports['attempt'] = reports.peaks.str.find('attempt')>=0
 
 
+#%% Extract state
 
+# Make tokenizer, make state column, extract state, convert to string
+state_tokenizer = RegexpTokenizer('NH|ME|VT|MA|RI|CT')
+reports.insert(loc=3,column='state',value=0)
+reports["state"] = reports["peaks"].apply(state_tokenizer.tokenize)
+reports["state"] = reports["state"].apply(''.join)
+
+# Correct duplicate states 
+reports.state = reports.state.str.replace("NHNH","NH")
+reports.state = reports.state.str.replace("CTCT","CT")
+reports.state = reports.state.str.replace("MEME","ME")
+reports.state = reports.state.str.replace("MAMA","MA")
+reports.state = reports.state.str.replace("MARI","MA")
+
+#%% Write dataframe 
+os.chdir(r'C:\Users\Alex\Documents\GitHub\trail-conditions\data\interim')
+reports.to_pickle('cleaned_reports')
 
 
