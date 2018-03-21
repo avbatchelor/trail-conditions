@@ -15,8 +15,7 @@ The following document is a summary of my trail conditions side project.
 * Future directions 
 * [How to use this repository](#id-section2)
 
-## Motivation & Project Goals
-<div id='id-section1'/>
+## Motivation & Project Goals ## <div id='id-section1'/>
 Earlier this year, I started leading hikes in the White Mountains with the awesome MIT Outing Club.  Part of what I love about winter hiking is that you may encounter a wide variety of conditions on the trails.  You might find yourself walking in three feet of powdered snow or you might find the snow to be tightly packed-down by previous hikers. These conditions require different equipment.  In powdered snow, you'll need snowshoes to stop yourself from post-holing but snowshoes are unnecessary (and tiring) on a packed-down trail.   
 
 #insert picture of post-holing vs. packed trail 
@@ -52,8 +51,8 @@ for i in range(1,5):
 ## Future directions
 * Incorporating reports from other websites
 
-<div id='id-section2'/>
-## How to use this repository
+
+## How to use this repository <div id='id-section2'/>
 
 ## Project Organization
 ------------
