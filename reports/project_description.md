@@ -15,8 +15,7 @@ The following document is a summary of my trail conditions side project.
 * Future directions 
 * [How to use this repository](#id-section2)
 
-<div id='id-section1'/>
-## Motivation & Project Goals 
+## Motivation & Project Goals <a name="id_section1"></a>
 Earlier this year, I started leading hikes in the White Mountains with the awesome MIT Outing Club.  Part of what I love about winter hiking is that you may encounter a wide variety of conditions on the trails.  You might find yourself walking in three feet of powdered snow or you might find the snow to be tightly packed-down by previous hikers. These conditions require different equipment.  In powdered snow, you'll need snowshoes to stop yourself from post-holing but snowshoes are unnecessary (and tiring) on a packed-down trail.   
 
 #insert picture of post-holing vs. packed trail 
