@@ -60,7 +60,7 @@ I decided to try and automate these algorithms so I could spend less time readin
  
 There are multiple websites hosting reports of trail conditions.  I decided to use data from the website [newenglandtrailconditions.com](http://newenglandtrailconditions.com/).  I like this website because the reports are separated into sections such as: surface conditions, recommended equipment, and water crossing notes.  This website also contains a lot of data, there are over 30,000 reports from almost 10 years! Here's an example report from the site: 
 
-![example report](https://github.com/avbatchelor/trail-conditions/blob/master/reports/figures/report_example.jpg)
+![alt text](https://github.com/avbatchelor/trail-conditions/blob/master/reports/figures/report_example.jpg)
 
 
 *Water data*
