@@ -36,6 +36,9 @@ def standardize_text(df, text_field):
     df[text_field] = df[text_field].str.replace("[^A-Za-z0-9]", " ")
     #Convert all characters to lowercase, in order to treat words such as “hello”, “Hello”, and “HELLO” the same
     df[text_field] = df[text_field].str.lower()
+    # Remove trailing whitespace 
+    df[text_field] = df[text_field].str.replace("\s+(?!\S)", "")
+
     return df
 
 #%% 
@@ -61,7 +64,7 @@ def clean_peaks(df,text_field):
 reports.insert(loc=7,column='txtcleaned_water_crossings',value=reports['water_crossings'])
 reports.insert(loc=8,column='water_class',value=0)
 
-# Clean text 
+#%% Clean text 
 reports = standardize_text(reports, "txtcleaned_water_crossings")
  
 # Tokenize text 
@@ -71,12 +74,7 @@ reports["water_tokens"] = reports["txtcleaned_water_crossings"].apply(space_toke
 # Look at most common crossing reports 
 common_crossing_reports = reports['txtcleaned_water_crossings'].value_counts()
 
-# These are some common answers:
-# no comment
-# none | none. | n a | none via this route.  | no crossings | na
-# no issues | no problems | no issues. | easy | not an issue | all easy | no problem | no problems.
-# bridged | all bridged
-# rock hoppable | rock hops | rock hopping
+
 
 
 sum(reports.water_crossings.str.count('tough'))
@@ -130,6 +128,61 @@ reports.state = reports.state.str.replace("CTCT","CT")
 reports.state = reports.state.str.replace("MEME","ME")
 reports.state = reports.state.str.replace("MAMA","MA")
 reports.state = reports.state.str.replace("MARI","MA")
+
+#%% Function for classifying water crossings
+def classify_crossings(df):
+    
+    # None list 
+    none_list = ['none','n a','none via this route','no crossings','na','no water crossings','none on this route']
+    
+    # Easy list 
+    easy_list = ['no issue','no_issues','no problem','no problems','easy','not an issue','all easy','rock hoppable','rock hops','rock hopping','bridged','all bridged','none of note','minor','easy rock hops','all rock hoppable','frozen','easily rock hopped','easily crossed','all frozen']
+    
+    # Difficult list 
+    difficult_list = ['']
+    
+    # Impassable list 
+    impossible_list = ['']
+    
+    # Set classifications
+    df.loc[df.txtcleaned_water_crossings == 'no comment', 'water_class'] = 'no comment'
+    df.loc[df.txtcleaned_water_crossings.isin(none_list), 'water_class'] = 'none'
+    df.loc[df.txtcleaned_water_crossings.isin(easy_list), 'water_class'] = 'easy'
+    df.loc[df.txtcleaned_water_crossings.isin(difficult_list), 'water_class'] = 'difficult'
+    df.loc[df.txtcleaned_water_crossings.isin(impossible_list), 'water_class'] = 'impossible'
+
+    return df
+
+#%% Classify crossings
+reports = classify_crossings(reports)
+
+
+# Describe labels 
+reports.txtcleaned_water_crossings.describe()
+reports.water_class.describe()
+
+# Definitely over samples impossible crossings but still lots of other reasons why people can't cross 
+attempt_df = reports.loc[reports.attempt == 1]
+
+#%% Label tricky/difficult data 
+# List words like difficult
+difficult_list = ['tricky','difficult','tough','hard']
+
+# Make a dataframe of rows that contain the above words 
+tricky_df = reports.loc[reports.txtcleaned_water_crossings.str.contains('|'.join(difficult_list)),'txtcleaned_water_crossings']
+
+# Select random rows from this dataframe 
+
+
+# Ask for input to asign 
+
+# Save the dataframe 
+
+# Add it to the water_class column in reports dataframe 
+
+#%% Label impossible data 
+
+
 
 #%% Write dataframe 
 os.chdir(r'C:\Users\Alex\Documents\GitHub\trail-conditions\data\interim')
