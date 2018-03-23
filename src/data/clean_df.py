@@ -149,7 +149,7 @@ def classify_crossings(df):
     df.loc[df.txtcleaned_water_crossings.isin(none_list), 'water_class'] = 'none'
     df.loc[df.txtcleaned_water_crossings.isin(easy_list), 'water_class'] = 'easy'
     df.loc[df.txtcleaned_water_crossings.isin(difficult_list), 'water_class'] = 'difficult'
-    df.loc[df.txtcleaned_water_crossings.isin(impossible_list), 'water_class'] = 'impossible'
+    df.loc[df.txtcleaned_water_crossings.isin(impossible_list), 'water_class'] = 'impassable'
 
     return df
 
@@ -172,13 +172,30 @@ difficult_list = ['tricky','difficult','tough','hard']
 tricky_df = reports.loc[reports.txtcleaned_water_crossings.str.contains('|'.join(difficult_list)),'txtcleaned_water_crossings']
 
 # Select random rows from this dataframe 
+sample_rows = tricky_df.sample(100)
 
+# Ask for input to asign
+sample_rows = sample_rows.to_frame()
+sample_rows.insert(loc = 1, column='water_class',value=0)
 
-# Ask for input to asign 
-
+for idx, row in sample_rows.iterrows():
+    print('\n' + row['txtcleaned_water_crossings']) 
+    assignment = int(input('1 = no comment, 2 = none, 3 = easy, 4 = difficult, 5 = impassable. Pick class:\t'))
+    class_list = ['no comment','none','easy','difficult','impassable']
+    sample_rows.loc[idx,'water_class'] = class_list[assignment-1]
+    reports.loc[idx,'water_class'] = class_list[assignment-1]
+    
 # Save the dataframe 
 
+
 # Add it to the water_class column in reports dataframe 
+    
+#%% 
+impassable_list = ['impassable','impossible']
+
+# Make a dataframe of rows that contain the above words 
+impassable_df = reports.loc[reports.txtcleaned_water_crossings.str.contains('|'.join(impassable_list)),'txtcleaned_water_crossings']
+
 
 #%% Label impossible data 
 

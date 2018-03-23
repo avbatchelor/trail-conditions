@@ -4,7 +4,7 @@ The following document is a summary of my trail conditions side project.
 
 ## Table of Contents 
 * [Motivation](#motivation)
-* [Summary of approach](#summary-of approach)
+* [Summary of approach](#summary-of-approach)
 * [The data](#the-data)
 	* [Sampling](#sampling)
 	* [Scraping](#scraping)
@@ -42,7 +42,8 @@ There's a lot of data out there to answer these questions, but that data isn't v
 
 **Human algorithm 2: Are rivers passable?**
 
-	1.  Look at reports (where people describe their hike) for the hike you want to go on?  Did those hikers have any issues with river crossings? 
+	1.  Find reports of trail conditions for the hike you want to go on. 
+	2.  Check whether reports note any issues with river crossings? 
 	2.  Check the weather forecast every day to see how much rain there has been between the last hike report and when you'll go on your hike. 
 	3.  Check USGS data on river height to see if river height is low or high. 
 	4.  Guess whether the river will be passable.
@@ -53,7 +54,20 @@ I decided to try and automate these algorithms so I could spend less time readin
 
 ## The data
 
-## Sampling 
+### Data sources
+
+*Reports data*
+ 
+There are multiple websites hosting reports of trail conditions.  I decided to use data from the website [newenglandtrailconditions.com](http://newenglandtrailconditions.com/).  I like this website because the reports are separated into sections such as: surface conditions, recommended equipment, and water crossing notes.  This website also contains a lot of data, there are over 30,000 reports from almost 10 years! Here's an example report from the site: 
+
+![example report](https://github.com/avbatchelor/trail-conditions/blob/master/reports/figures/report_example.png)
+
+
+*Water data*
+
+ 
+
+### Sampling 
 
 * Bad conditions may be under-sampled 
 * People that use this website are certain subset of hikers, might have different hiking habits e.g. prefer quieter trails 
@@ -61,7 +75,7 @@ I decided to try and automate these algorithms so I could spend less time readin
 
 
 ```python
-# some test code
+some test code
 for i in range(1,5):
     print(i)
 ```
@@ -72,12 +86,25 @@ for i in range(1,5):
     4
     
 
-## Scraping the data
+### Scraping
+
+
 
 ## Which hikes have good views?
 
 ## Water crossings 
 * Mention 
+
+## What I learned 
+
+*Coding*
+
+* Scraping data with Requests
+* Parsing HTML with Beautiful Soup
+* 
+
+
+
 
 ## Future directions
 * Incorporating reports from other websites
