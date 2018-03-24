@@ -17,7 +17,7 @@ reports = pd.read_pickle('all_reports')
 
 #%% Clean text data 
 #Code adaptated from https://github.com/hundredblocks/concrete_NLP_tutorial/blob/master/NLP_notebook.ipynb
-def standardize_text(df, text_field):
+def clean_water_crossings(df, text_field):
     # Prefix with r so that special characters aren't treated differently i.e. \n would be treated as \ and n rather than a new line
     # No comment for blank entries 
     df[text_field] = df[text_field].str.replace("(?<![\s\S])\xa0(?![\s\S])","no comment")
@@ -27,8 +27,8 @@ def standardize_text(df, text_field):
     df[text_field] = df[text_field].str.replace(r"@\S+", "")
     df[text_field] = df[text_field].str.replace(r"@", "at")
     # Replace " and ' with inches and feet 
-    df[text_field] = df[text_field].str.replace(r"\'", " feet")
-    df[text_field] = df[text_field].str.replace(r"\"", " inches")
+    df[text_field] = df[text_field].str.replace(r"(?<=\d)\'", " feet")
+    df[text_field] = df[text_field].str.replace(r"(?<=\d)\"", " inches")
     # Replace digit-digit with digit to digit
     df[text_field] = df[text_field].str.replace("(?<=\d)-(?=\d)"," to ")
     df[text_field] = df[text_field].str.replace("(?<=[a-zA-Z]) -(?=\s[a-zA-Z])",". ")
@@ -61,18 +61,18 @@ def clean_peaks(df,text_field):
 #%% Clean water crossings
     
 # Create columns for standardized text and categorized text
-reports.insert(loc=7,column='txtcleaned_water_crossings',value=reports['water_crossings'])
+reports.insert(loc=7,column='clean_water_crossings',value=reports['water_crossings'])
 reports.insert(loc=8,column='water_class',value=0)
 
 #%% Clean text 
-reports = standardize_text(reports, "txtcleaned_water_crossings")
+reports = clean_water_crossings(reports, "clean_water_crossings")
  
 # Tokenize text 
 space_tokenizer = RegexpTokenizer(r'\w+')
-reports["water_tokens"] = reports["txtcleaned_water_crossings"].apply(space_tokenizer.tokenize)
+reports["water_tokens"] = reports["clean_water_crossings"].apply(space_tokenizer.tokenize)
 
 # Look at most common crossing reports 
-common_crossing_reports = reports['txtcleaned_water_crossings'].value_counts()
+common_crossing_reports = reports['clean_water_crossings'].value_counts()
 
 
 
@@ -129,75 +129,6 @@ reports.state = reports.state.str.replace("MEME","ME")
 reports.state = reports.state.str.replace("MAMA","MA")
 reports.state = reports.state.str.replace("MARI","MA")
 
-#%% Function for classifying water crossings
-def classify_crossings(df):
-    
-    # None list 
-    none_list = ['none','n a','none via this route','no crossings','na','no water crossings','none on this route']
-    
-    # Easy list 
-    easy_list = ['no issue','no_issues','no problem','no problems','easy','not an issue','all easy','rock hoppable','rock hops','rock hopping','bridged','all bridged','none of note','minor','easy rock hops','all rock hoppable','frozen','easily rock hopped','easily crossed','all frozen']
-    
-    # Difficult list 
-    difficult_list = ['']
-    
-    # Impassable list 
-    impossible_list = ['']
-    
-    # Set classifications
-    df.loc[df.txtcleaned_water_crossings == 'no comment', 'water_class'] = 'no comment'
-    df.loc[df.txtcleaned_water_crossings.isin(none_list), 'water_class'] = 'none'
-    df.loc[df.txtcleaned_water_crossings.isin(easy_list), 'water_class'] = 'easy'
-    df.loc[df.txtcleaned_water_crossings.isin(difficult_list), 'water_class'] = 'difficult'
-    df.loc[df.txtcleaned_water_crossings.isin(impossible_list), 'water_class'] = 'impassable'
-
-    return df
-
-#%% Classify crossings
-reports = classify_crossings(reports)
-
-
-# Describe labels 
-reports.txtcleaned_water_crossings.describe()
-reports.water_class.describe()
-
-# Definitely over samples impossible crossings but still lots of other reasons why people can't cross 
-attempt_df = reports.loc[reports.attempt == 1]
-
-#%% Label tricky/difficult data 
-# List words like difficult
-difficult_list = ['tricky','difficult','tough','hard']
-
-# Make a dataframe of rows that contain the above words 
-tricky_df = reports.loc[reports.txtcleaned_water_crossings.str.contains('|'.join(difficult_list)),'txtcleaned_water_crossings']
-
-# Select random rows from this dataframe 
-sample_rows = tricky_df.sample(100)
-
-# Ask for input to asign
-sample_rows = sample_rows.to_frame()
-sample_rows.insert(loc = 1, column='water_class',value=0)
-
-for idx, row in sample_rows.iterrows():
-    print('\n' + row['txtcleaned_water_crossings']) 
-    assignment = int(input('1 = no comment, 2 = none, 3 = easy, 4 = difficult, 5 = impassable. Pick class:\t'))
-    class_list = ['no comment','none','easy','difficult','impassable']
-    sample_rows.loc[idx,'water_class'] = class_list[assignment-1]
-    reports.loc[idx,'water_class'] = class_list[assignment-1]
-    
-# Save the dataframe 
-
-
-# Add it to the water_class column in reports dataframe 
-    
-#%% 
-impassable_list = ['impassable','impossible']
-
-# Make a dataframe of rows that contain the above words 
-impassable_df = reports.loc[reports.txtcleaned_water_crossings.str.contains('|'.join(impassable_list)),'txtcleaned_water_crossings']
-
-
-#%% Label impossible data 
 
 
 

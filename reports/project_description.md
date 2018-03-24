@@ -16,6 +16,7 @@ The following document is a summary of my trail conditions side project.
 * [What I learned](#what-i-learned)
 * [Future directions](#future-directions) 
 * [How to use this repository](#how-to-use-this-repository)
+* [Project Organization](#project-organization)
 
 ## Motivation
 Earlier this year, I started leading winter hikes in the White Mountains with the awesome MIT Outing Club.  While I was planning my hikes, I spent a lot of time on the internet trying to answer questions like these:
