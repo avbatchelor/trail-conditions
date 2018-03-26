@@ -55,6 +55,12 @@ def clean_peaks(df,text_field):
     df[text_field] = df[text_field].str.replace(" and ",",")
     # lowercase
     df[text_field] = df[text_field].str.lower()
+    # Remove trailing whitespace 
+    df[text_field] = df[text_field].str.replace("\s+(?!\S)", "")
+    # Remove preceding whitespace 
+    df[text_field] = df[text_field].str.replace("(?<!\S)\s+", "")
+    #Remove all irrelevant characters such as any non alphanumeric characters
+    df[text_field] = df[text_field].str.replace("[^a-z\s]", " ")
     return df
     
 

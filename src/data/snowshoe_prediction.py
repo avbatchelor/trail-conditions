@@ -17,10 +17,7 @@ import pandas as pd
 import os
 from nltk.tokenize import RegexpTokenizer
 import os
-
-#%% Read in large dataframe
-os.chdir('C:\\Users\\Alex\\Documents\\GitHub\\trail-conditions\\data\\raw')
-reports = pd.read_pickle('all_reports')
+import matplotlib.pyplot as plt
 
 #%% 
 def clean_peaks(df,text_field):
@@ -36,10 +33,24 @@ def clean_peaks(df,text_field):
     df[text_field] = df[text_field].str.replace(" and ",",")
     # lowercase
     df[text_field] = df[text_field].str.lower()
+    # Replace apostophes 
+    df[text_field] = df[text_field].str.replace("\'", "")
+    #Remove all irrelevant characters such as any non alphanumeric characters
+    df[text_field] = df[text_field].str.replace("[^a-z\s\,]", " ")
+    # Remove trailing commas
+    df[text_field] = df[text_field].str.replace("\,(?!\s+\S)", "")
+    # remove multiple whitespaces 
+    df[text_field] = df[text_field].str.replace("\s+", " ")
+    # Remove trailing whitespace 
+    df[text_field] = df[text_field].str.replace("\s+(?!\S)", "")
+    # Remove preceding whitespace 
+    df[text_field] = df[text_field].str.replace("(?<!\S)\s+", "")
     return df
 
 
 #%% Analyze peaks 
+os.chdir('C:\\Users\\Alex\\Documents\\GitHub\\trail-conditions\\data\\raw')
+reports = pd.read_pickle('all_reports')
 
 # Empty columns
 reports.insert(loc=2,column='clean_peaks',value=reports['peaks'])
@@ -63,6 +74,70 @@ _ = reports.apply(lambda row: [rows.append([row['entry_id'], pt, row['date_of_hi
                          for pt in row.peak_tokens], axis=1)
 column_list = ['entry_id','peak_tokens','date_of_hike','snowshoes','comments']
 reports_new = pd.DataFrame(rows, columns=column_list).set_index(['entry_id', 'peak_tokens'])
+reports_new.reset_index(inplace=True)
+
+# Remove trailing whitespace 
+reports_new['peak_tokens'] = reports_new['peak_tokens'].str.replace("\s+(?!\S)", "")
 
 #%% 
+reports_new['datetime'] = pd.to_datetime(reports_new.date_of_hike)
+reports_new['month'] = reports_new['datetime'].dt.month
 
+##%% 
+#plt.show()
+#snow_df = reports_new[['month','snowshoes']].copy()
+#by_month = snow_df.groupby(snow_df.month).sum()
+#by_month.plot()
+#
+##%%
+#trail_df = reports_new[['peak_tokens','snowshoes']].copy()
+#by_trail = trail_df.groupby(trail_df.peak_tokens).sum()
+#by_trail.plot()
+#
+##%% Are all trails used equally in winter?
+#trail_freq_df = reports_new[['peak_tokens','month','snowshoes']].copy()
+#by_trail_freq = trail_freq_df.groupby(['month','peak_tokens']).sum()
+#by_trail.plot()
+
+#%% 
+peak_list = reports_new[['peak_tokens','snowshoes']].groupby(['peak_tokens']).count()
+
+peak_list.reset_index(inplace=True)
+
+#%% 
+os.chdir(r'C:\Users\Alex\Documents\GitHub\trail-conditions\data\raw')
+mtn_list = pd.read_csv("nh_48_list.csv")
+mtn_list.mountain = mtn_list.mountain.str.lower()
+# Replace apostophes 
+mtn_list.mountain = mtn_list.mountain.str.replace("\'", "")
+mtn_list["mtn_tokens"] = mtn_list.mountain
+mtn_list["mtn_tokens"] = mtn_list["mtn_tokens"].apply(comma_space_tokenizer.tokenize)
+
+# Insert 
+reports_new.insert(loc=7,column='four_footer',value=0)
+reports_new.insert(loc=8,column='clean_peak_names',value='')
+
+for idx, mountain in mtn_list.mtn_tokens.iteritems():
+    if len(mountain) == 1:
+        # Look through peak_tokens in reports_new, 
+        reports_new.loc[reports_new.peak_tokens.str.contains(''.join(mountain)),'four_footer'] = 1
+        reports_new.loc[reports_new.peak_tokens.str.contains(''.join(mountain)),'clean_peak_names'] = ' '.join(mountain)
+        
+for idx, mountain in mtn_list.mtn_tokens.iteritems():
+    if len(mountain) == 2:
+        # Look through peak_tokens in reports_new, 
+        reports_new.loc[(reports_new.peak_tokens.str.contains(''.join(mountain[0]))) & (reports_new.peak_tokens.str.contains(''.join(mountain[1]))),'four_footer'] = 1
+        reports_new.loc[(reports_new.peak_tokens.str.contains(''.join(mountain[0]))) & (reports_new.peak_tokens.str.contains(''.join(mountain[1]))),'clean_peak_names'] = ' '.join(mountain)
+
+#%% 
+class_df = reports_new[['clean_peak_names','month','snowshoes','four_footer']].copy()
+class_df = class_df.loc[class_df.four_footer == 1]
+class_df.drop(columns='four_footer',inplace=True)
+class_df.rename(index=str, columns={"clean_peak_names": "peak"}, inplace=True)
+
+#%% 
+peak_list = class_df[['peak','snowshoes']].groupby(['peak']).count()
+
+#%% Write dataframe 
+os.chdir(r'C:\Users\Alex\Documents\GitHub\trail-conditions\data\interim')
+class_df.to_pickle('df_for_snowshoe_classification')
