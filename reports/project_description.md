@@ -105,6 +105,9 @@ Once I got the table, I had to loop through the html tags for rows and columns t
 ## Which hikes have good views?
 
 ## Snowshoes
+
+![alt text](https://github.com/avbatchelor/trail-conditions/blob/master/reports/figures/prob_snowshoes_by_peak.pdf)
+
 * Baseline 1: 0.636
 * Baseline 2: 0.371
 * Logistic regression: 0.368

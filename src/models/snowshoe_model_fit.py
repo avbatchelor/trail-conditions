@@ -61,3 +61,8 @@ print(log_loss(y_test,y_pred))
 r.fit(x_train,y_train)
 y_pred = r.predict_proba(x_test)
 print(log_loss(y_test,y_pred))
+
+#%% Hike prob
+peak_snow_df = df.loc[df.month.isin([1,2,3])]
+peak_prob = peak_snow_df[['peak','snowshoes']].groupby(['peak']).mean()
+
