@@ -66,3 +66,12 @@ print(log_loss(y_test,y_pred))
 peak_snow_df = df.loc[df.month.isin([1,2,3])]
 peak_prob = peak_snow_df[['peak','snowshoes']].groupby(['peak']).mean()
 
+#%% Make figures
+plt.show() 
+peak_prob.sort_values(by=['snowshoes'],inplace=True)
+peak_prob.plot.bar()
+plt.xlabel('Peak')
+plt.ylabel('Probability of needing snowshoes')
+plt.legend('')
+plt.title('Probability of needing snowshoes during Jan, Feb and March')
+plt.savefig(r'C:\Users\Alex\Documents\GitHub\trail-conditions\reports\figures\prob_snowshoes_by_peak.svg')
