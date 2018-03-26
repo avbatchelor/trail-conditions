@@ -40,7 +40,7 @@ y_test = snowshoes[~msk]
 
 #%% Baseline 1 - mean of y_train (i.e. overall probability of needing snowshoes)
 y_pred = np.ones(len(y_test))*y_train.mean()
-print(log_loss(y_test,y_pred)
+print(log_loss(y_test,y_pred))
 
 #%% Baseline 2 - predict mean by month 
 snowshoe_prob = df[['month','snowshoes']].groupby(['month']).mean()

@@ -70,39 +70,60 @@ There are multiple websites hosting reports of trail conditions.  I decided to u
 
 ### Sampling 
 
+* Selection of 4000 footers 
 * Bad conditions may be under-sampled 
 * People that use this website are certain subset of hikers, might have different hiking habits e.g. prefer quieter trails 
 
 
 
-```python
-some test code
-for i in range(1,5):
-    print(i)
-```
 
-    1
-    2
-    3
-    4
     
 
 ### Scraping
 
+Scraping data and parsing html turns out to be pretty easy when using request and beautiful soup.  Here's a simplified example of the code I used to scrape and parse trail reports: 
 
+```python
+import requests
+from bs4 import BeautifulSoup
+
+id = 1
+url = "http://www.newenglandtrailconditions.com/nh/viewreport.php?entryid=" + str(id)
+result = requests.get(url)
+
+# Parse html 
+soup = BeautifulSoup(result.text, 'html.parser')
+
+# Select the table containing hike report 
+table = soup.find_all('table')[2] 
+
+```
+Fortunately, the urls for the trail reports only differ by an id number  at the end of the url that increments by 1 for each new report.  So I was able to loop through the urls to get each report.  
+
+Once I got the table, I had to loop through the html tags for rows and columns to extract the data I needed. 
 
 ## Which hikes have good views?
 
-## Water crossings 
-* Mention 
+## Snowshoes
+* Baseline 1: 0.636
+* Baseline 2: 0.371
+* Logistic regression: 0.368
+* Random forest: 0.636
 
 ## What I learned 
+
+*Big picture*
+
+* You can learn a lot without doing any predictive modeling.
+* Cleaning the text from free-form answers to questions is difficult - there are all kinds of idiosyncrasies that you have to deal with e.g. spelling mistakes, typos, different levels of detail. 
+* Write out what your model inputs and outputs will be before you even start cleaning data 
+* It can be hard to beat a good baseline model
 
 *Coding*
 
 * Scraping data with Requests
 * Parsing HTML with Beautiful Soup
-* 
+* More fluent with pandas 
 
 
 
