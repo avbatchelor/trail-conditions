@@ -5,14 +5,14 @@ This is a summary of my side project.  The project is still a work in progress s
 ## Table of Contents 
 * [Motivation](#motivation)
 * [Summary of approach](#summary-of-approach)
-* [The data](#the-data)
+* [Results](#results)
+* [My approach in more detail](#my-approach-in-more-detail)
+	* [Data sources](#data-sources)
 	* [Sampling](#sampling)
 	* [Scraping](#scraping)
 	* [Cleaning](#cleaning)
-* [Which hikes have good views?](#which-hikes-have-good-views)
-* [Which rivers are passable?]()
-	* [Word embeddings]()
-	* [Logistic regression]()
+	* [Natural language processing?](#natural-language-processing)
+	* [Classification](#classification)
 * [What I learned](#what-i-learned)
 * [Future directions](#future-directions) 
 * [How to use this repository](#how-to-use-this-repository)
@@ -23,26 +23,33 @@ This is a summary of my side project.  The project is still a work in progress s
 Earlier this year I started leading winter hikes in the White Mountains and needed to answer these two questions:
 
 >Which hike should I go on?
->And what equipment do I need for that hike?  
+>What equipment do I need for that hike?  
 
 I decided to start a side project so that I could gain quick answers to these questions without having to read many hike descriptions and check the weather every day.  
 
 ## Summary of approach
 
-*Which hike should I go on?* 
+### Which hike should I go on?
 
-For this part of the project I decided to focus on determining which hikes have amazing views.  To do this, I scraped and cleaned data from online hike reports and used natural language processing techniques to parse the text data.  Specifically, I looked for instances where the word *view* was followed adjectives like *amazing* or *wonderful*.  I now know which hikes have amazing views!
+For this part of the project, I decided to focus on determining which hikes have amazing views.  To do this, I scraped and cleaned data from online hike reports and used natural language processing techniques to parse the text data.  Specifically, I looked for instances adjectives like *amazing* or *wonderful* preceded the word *view*.  I now know which hikes have amazing views!
 
 ![alt text](https://github.com/avbatchelor/trail-conditions/blob/master/reports/figures/view_from_pierce.JPG)
 *I know Mt. Pierce has great views - but are the views from other peaks just as good?*
 
-*What equipment do I need?* 
+### What equipment do I need?
 
-The next challenge is to determine what equipment I need.  For example, in the winter, especially if it has snowed recently, I’m likely to need snowshoes.  So far, I’ve fit a logistic regression model that takes the month of the year and the trail name (one-hot-encoded) as inputs and predicts whether snowshoes are needed with reasonable accuracy.  Next, I plan to improve the classifier by incorporating weather data.  
+For this part of the project, I decided to focus on determining whether I'd need snowshoes for a hike.  For some hikes, snowshoes are absolutely necessary to prevent you sinking into the snow (commonly known as *postholing*).  But snowshoes are heavy, so it's good to avoid carrying them unnecessarily.  So it would be great to be able to accurately predict whether or not snowshoes are necessary for a hike.  
+
+There are two situations where snowshoes are usually necessary:
+
+1. For any hike after heavy snowfall 
+2. For less-traveled hikes anytime in the winter - i.e. for hikes where there haven't been enough hikers to pack the snow down
+
+And so, I plan to build a classifier with input variables such as *amount of recent snowfall* and *hike popularity* and outputs a probability for how likely it is that snowshoes are needed. 
+
+So far, I’ve built some baseline classifiers that predict whether snowshoes are needed with reasonable accuracy.  Now I'm working on building the classifier described above to see if that is more accurate.  
 
 ## Results
-
-
 
 ## My approach in more detail
 
@@ -53,9 +60,6 @@ The next challenge is to determine what equipment I need.  For example, in the w
 There are multiple websites hosting reports of trail conditions.  I decided to use data from the website [newenglandtrailconditions.com](http://newenglandtrailconditions.com/).  I like this website because the reports are separated into sections such as: surface conditions, recommended equipment, and water crossing notes.  This website also contains a lot of data, there are over 30,000 reports from almost 10 years! Here's an example report from the site: 
 
 ![alt text](https://github.com/avbatchelor/trail-conditions/blob/master/reports/figures/example_report.jpg)
-
-
-*Water data*
 
  
 
@@ -93,16 +97,11 @@ Fortunately, the urls for the trail reports only differ by an id number  at the 
 
 Once I got the table, I had to loop through the html tags for rows and columns to extract the data I needed. 
 
-## Which hikes have good views?
+### Cleaning 
 
-Which hikes have good views?**
+### Natural language processing 
 
-	1. Find list of hikes 
-	2. Randomly select a hike 
-	3. Find description of that hike 
-	4. See if the author mentions that there is a good view 
-
-## Snowshoes
+### Classification
 
 ![alt text](https://github.com/avbatchelor/trail-conditions/blob/master/reports/figures/prob_snowshoes_by_peak.png)
 
@@ -118,7 +117,7 @@ Which hikes have good views?**
 *Big picture*
 
 * You can learn a lot without doing any predictive modeling.
-* Cleaning the text from free-form answers to questions is difficult - there are all kinds of idiosyncrasies that you have to deal with e.g. spelling mistakes, typos, different levels of detail. 
+* Cleaning the text from free-form answers to questions is difficult - there are all kinds of idiosyncrasies that you have to deal with e.g. spelling mistakes, typos, people providing information with different levels of detail. 
 * Write out what your model inputs and outputs will be before you even start cleaning data 
 * It can be hard to beat a good baseline model
 
@@ -126,19 +125,20 @@ Which hikes have good views?**
 
 * Scraping data with Requests
 * Parsing HTML with Beautiful Soup
-* More fluent with pandas 
+* More fluent with pandas & regular expression
 
 
 
 
 ## Future directions
+* Predicting whether river crossings are passable
 * Incorporating reports from other websites
 
 
 ## How to use this repository
+* I'll add info about how to run my code soon. 
 
 ## Project Organization
-------------
 
     ├── LICENSE
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
