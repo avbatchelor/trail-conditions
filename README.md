@@ -20,20 +20,31 @@ This is a summary of my side project.  The project is still a work in progress s
 
 ## Motivation
 
-Earlier this year I started leading winter hikes in the White Mountains and found myself having to answer two questions: 
+Earlier this year I started leading winter hikes in the White Mountains and needed to answer these two questions:
 
 >Which hike should I go on?
->What equipment do I need for that hike?  
+>And what equipment do I need for that hike?  
 
 I decided to start a side project so that I could gain quick answers to these questions without having to read many hike descriptions and check the weather every day.  
 
 ## Summary of approach
 
-To determine which hike I should go on, I scraped and cleaned data from online hike reports and used natural language processing techniques to parse the text data.  I now know which hikes have amazing views!
+*Which hike should I go on?* 
+
+For this part of the project I decided to focus on determining which hikes have amazing views.  To do this, I scraped and cleaned data from online hike reports and used natural language processing techniques to parse the text data.  Specifically, I looked for instances where the word *view* was followed adjectives like *amazing* or *wonderful*.  I now know which hikes have amazing views!
+
+![alt text](https://github.com/avbatchelor/trail-conditions/blob/master/reports/figures/view_from_pierce.jpg)
+*I know Mt. Pierce has great views - but are the views from other peaks just as good?*
+
+*What equipment do I need?* 
 
 The next challenge is to determine what equipment I need.  For example, in the winter, especially if it has snowed recently, I’m likely to need snowshoes.  So far, I’ve fit a logistic regression model that takes the month of the year and the trail name (one-hot-encoded) as inputs and predicts whether snowshoes are needed with reasonable accuracy.  Next, I plan to improve the classifier by incorporating weather data.  
 
-## The data
+## Results
+
+
+
+## My approach in more detail
 
 ### Data sources
 
