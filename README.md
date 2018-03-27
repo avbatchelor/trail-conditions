@@ -1,24 +1,129 @@
-
 # Predicting trail conditions
 
-The following document is a summary of my trail conditions side project. 
+This is a summary of my side project.  The project is still a work in progress so please forgive me for parts that are incomplete - I'll be updating it throughout March and April 2018. 
 
-## Contents 
-* Motivation & project goals
-* Scraping the data
-* Cleaning the data using NLP 
-* Exploratory analysis and visualizations 
-* Key discoveries 
-* What I learned 
-* How to use this repository
+## Table of Contents 
+* [Motivation](#motivation)
+* [Summary of approach](#summary-of-approach)
+* [The data](#the-data)
+	* [Sampling](#sampling)
+	* [Scraping](#scraping)
+	* [Cleaning](#cleaning)
+* [Which hikes have good views?](#which-hikes-have-good-views)
+* [Which rivers are passable?]()
+	* [Word embeddings]()
+	* [Logistic regression]()
+* [What I learned](#what-i-learned)
+* [Future directions](#future-directions) 
+* [How to use this repository](#how-to-use-this-repository)
+* [Project Organization](#project-organization)
 
-## Motivation & Project Goals
+## Motivation
 
-![alt text](https://github.com/avbatchelor/trail-conditions/blob/master/images/trail_example.JPG)
+Earlier this year I started leading winter hikes in the White Mountains and found myself having to answer two questions: 
+	
+	Which hike should I go on? 
+
+	What equipment do I need for that hike?  
+
+I decided to start a side project so that I could gain quick answers to these questions without having to read many hike descriptions and check the weather every day.  
+
+## Summary of approach
+
+To determine which hike I should go on, I scraped and cleaned data from online hike reports and used natural language processing techniques to parse the text data.  I now know which hikes have amazing views!
+
+The next challenge is to determine what equipment I need.  For example, in the winter, especially if it has snowed recently, I’m likely to need snowshoes.  So far, I’ve fit a logistic regression model that takes the month of the year and the trail name (one-hot-encoded) as inputs and predicts whether snowshoes are needed with reasonable accuracy.  Next, I plan to improve the classifier by incorporating weather data.  
+
+## The data
+
+### Data sources
+
+*Reports data*
+ 
+There are multiple websites hosting reports of trail conditions.  I decided to use data from the website [newenglandtrailconditions.com](http://newenglandtrailconditions.com/).  I like this website because the reports are separated into sections such as: surface conditions, recommended equipment, and water crossing notes.  This website also contains a lot of data, there are over 30,000 reports from almost 10 years! Here's an example report from the site: 
+
+![alt text](https://github.com/avbatchelor/trail-conditions/blob/master/reports/figures/example_report.jpg)
+
+
+*Water data*
+
+ 
+
+### Sampling 
+
+* Selection of 4000 footers 
+* Bad conditions may be under-sampled 
+* People that use this website are certain subset of hikers, might have different hiking habits e.g. prefer quieter trails 
 
 
 
-## Scraping the data
+
+    
+
+### Scraping
+
+Scraping data and parsing html turns out to be pretty easy when using request and beautiful soup.  Here's a simplified example of the code I used to scrape and parse trail reports: 
+
+```python
+import requests
+from bs4 import BeautifulSoup
+
+id = 1
+url = "http://www.newenglandtrailconditions.com/nh/viewreport.php?entryid=" + str(id)
+result = requests.get(url)
+
+# Parse html 
+soup = BeautifulSoup(result.text, 'html.parser')
+
+# Select the table containing hike report 
+table = soup.find_all('table')[2] 
+
+```
+Fortunately, the urls for the trail reports only differ by an id number  at the end of the url that increments by 1 for each new report.  So I was able to loop through the urls to get each report.  
+
+Once I got the table, I had to loop through the html tags for rows and columns to extract the data I needed. 
+
+## Which hikes have good views?
+
+Which hikes have good views?**
+
+	1. Find list of hikes 
+	2. Randomly select a hike 
+	3. Find description of that hike 
+	4. See if the author mentions that there is a good view 
+
+## Snowshoes
+
+![alt text](https://github.com/avbatchelor/trail-conditions/blob/master/reports/figures/prob_snowshoes_by_peak.png)
+
+![alt text](https://github.com/avbatchelor/trail-conditions/blob/master/reports/figures/prob_snowshoes_by_peak.svg)
+
+* Baseline 1: 0.636
+* Baseline 2: 0.371
+* Logistic regression: 0.368
+* Random forest: 0.636
+
+## What I learned 
+
+*Big picture*
+
+* You can learn a lot without doing any predictive modeling.
+* Cleaning the text from free-form answers to questions is difficult - there are all kinds of idiosyncrasies that you have to deal with e.g. spelling mistakes, typos, different levels of detail. 
+* Write out what your model inputs and outputs will be before you even start cleaning data 
+* It can be hard to beat a good baseline model
+
+*Coding*
+
+* Scraping data with Requests
+* Parsing HTML with Beautiful Soup
+* More fluent with pandas 
+
+
+
+
+## Future directions
+* Incorporating reports from other websites
+
 
 ## How to use this repository
 

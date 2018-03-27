@@ -67,12 +67,6 @@ peak_snow_df = df.loc[df.month.isin([1,2,3])]
 peak_prob = peak_snow_df[['peak','snowshoes']].groupby(['peak']).mean()
 
 #%% Make figures
-plt.rc('font', family='serif', serif='Times')
-plt.rc('text', usetex=True)
-plt.rc('xtick', labelsize=8)
-plt.rc('ytick', labelsize=8)
-plt.rc('axes', labelsize=8)
-
 plt.show() 
 peak_prob.sort_values(by=['snowshoes'],inplace=True)
 peak_prob.plot.bar()
