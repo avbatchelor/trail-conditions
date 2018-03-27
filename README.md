@@ -1,7 +1,7 @@
+# Predicting trail conditions
+
 ![alt text](https://github.com/avbatchelor/trail-conditions/blob/master/reports/figures/view_from_pierce.JPG)
 *Mt. Pierce has great views - but are the views from other peaks just as good?*
-
-# Predicting trail conditions
 
 This is a summary of my side project.  The project is still a work in progress so please forgive me for parts that are incomplete - I'll be updating it throughout March and April 2018. 
 
@@ -50,6 +50,19 @@ And so, I plan to build a classifier with input variables such as *amount of rec
 So far, I’ve built some baseline classifiers that predict whether snowshoes are needed with reasonable accuracy.  Now I'm working on building the classifier described above to see if that is more accurate.  
 
 ## Results
+
+### The top ten mountains for amazing views: 
+
+1. Liberty
+2. Pierce
+3. Flume
+4. Lafayette
+5. Lincoln
+6. Bondcliff
+7. Washington
+8. Bond
+9. Bond West
+10. Eisenhower
 
 ## My approach in more detail
 
