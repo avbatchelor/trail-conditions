@@ -103,7 +103,7 @@ Once I got the table, I had to loop through the html tags for rows and columns t
 
 ### Classification
 
-![alt text](https://github.com/avbatchelor/trail-conditions/blob/master/reports/figures/prob_snowshoes_by_peak.png)
+![alt text](https://github.com/avbatchelor/trail-conditions/blob/master/reports/figures/prob_snowshoes_by_month.svg)
 
 ![alt text](https://github.com/avbatchelor/trail-conditions/blob/master/reports/figures/prob_snowshoes_by_peak.svg)
 
