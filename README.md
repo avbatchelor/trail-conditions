@@ -3,7 +3,7 @@
 ![alt text](https://github.com/avbatchelor/trail-conditions/blob/master/reports/figures/view_from_pierce.JPG)
 *Mt. Pierce has great views - but are the views from other peaks just as good?*
 
-This is a summary of my side project.  The project is still a work in progress so please forgive me for parts that are incomplete - I'll be updating it throughout March and April 2018. 
+This is a summary of my side project.  The project is still a work in progress - I'll be updating it throughout March and April 2018. 
 
 ## Table of Contents 
 * [Motivation](#motivation)

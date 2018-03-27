@@ -28,4 +28,7 @@ df.comments = df.comments.str.lower()
 df.comments = df.comments.str.replace("views", "view")
 
 #%% Find amazing views 
-
+df.insert(loc=2,column='amazing_view',value=0)
+df.loc[df.comments.str.contains('amazing view'),'amazing_view'] = 1
+view_count = df[['peak','amazing_view']].groupby(['peak']).sum()
+view_count.sort_values(by=['amazing_view'],inplace=True,ascending=False)

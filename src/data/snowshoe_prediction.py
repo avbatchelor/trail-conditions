@@ -142,10 +142,12 @@ os.chdir(r'C:\Users\Alex\Documents\GitHub\trail-conditions\data\interim')
 class_df.to_pickle('df_for_snowshoe_classification')
 
 #%% Make a dataframe for finding great views 
-view_df = reports_new[['clean_peak_names','comments']].copy()
+view_df = reports_new[['clean_peak_names','comments','four_footer']].copy()
+view_df = view_df.loc[view_df.four_footer == 1]
+view_df.drop(columns='four_footer',inplace=True)
 view_df.rename(index=str, columns={"clean_peak_names": "peak"}, inplace=True)
 # Save it 
 os.chdir(r'C:\Users\Alex\Documents\GitHub\trail-conditions\data\interim')
-class_df.to_pickle('df_views')
+view_df.to_pickle('df_views')
 
 
