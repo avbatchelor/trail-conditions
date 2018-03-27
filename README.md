@@ -33,7 +33,7 @@ I decided to start a side project so that I could gain quick answers to these qu
 
 For this part of the project I decided to focus on determining which hikes have amazing views.  To do this, I scraped and cleaned data from online hike reports and used natural language processing techniques to parse the text data.  Specifically, I looked for instances where the word *view* was followed adjectives like *amazing* or *wonderful*.  I now know which hikes have amazing views!
 
-![alt text](https://github.com/avbatchelor/trail-conditions/blob/master/reports/figures/view_from_pierce.jpg)
+![alt text](https://github.com/avbatchelor/trail-conditions/blob/master/reports/figures/view_from_pierce.JPG)
 *I know Mt. Pierce has great views - but are the views from other peaks just as good?*
 
 *What equipment do I need?* 
