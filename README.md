@@ -21,10 +21,10 @@ This is a summary of my side project.  The project is still a work in progress s
 ## Motivation
 
 Earlier this year I started leading winter hikes in the White Mountains and found myself having to answer two questions: 
-	
-	Which hike should I go on? 
 
-	What equipment do I need for that hike?  
+>Which hike should I go on?
+
+>What equipment do I need for that hike?  
 
 I decided to start a side project so that I could gain quick answers to these questions without having to read many hike descriptions and check the weather every day.  
 
