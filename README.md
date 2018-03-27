@@ -1,3 +1,6 @@
+![alt text](https://github.com/avbatchelor/trail-conditions/blob/master/reports/figures/view_from_pierce.JPG)
+*Mt. Pierce has great views - but are the views from other peaks just as good?*
+
 # Predicting trail conditions
 
 This is a summary of my side project.  The project is still a work in progress so please forgive me for parts that are incomplete - I'll be updating it throughout March and April 2018. 
@@ -32,9 +35,6 @@ I decided to start a side project so that I could gain quick answers to these qu
 ### Which hike should I go on?
 
 For this part of the project, I decided to focus on determining which hikes have amazing views.  To do this, I scraped and cleaned data from online hike reports and used natural language processing techniques to parse the text data.  Specifically, I looked for instances adjectives like *amazing* or *wonderful* preceded the word *view*.  I now know which hikes have amazing views!
-
-![alt text](https://github.com/avbatchelor/trail-conditions/blob/master/reports/figures/view_from_pierce.JPG)
-*I know Mt. Pierce has great views - but are the views from other peaks just as good?*
 
 ### What equipment do I need?
 

@@ -66,20 +66,34 @@ print(log_loss(y_test,y_pred))
 peak_snow_df = df.loc[df.month.isin([1,2,3])]
 peak_prob = peak_snow_df[['peak','snowshoes']].groupby(['peak']).mean()
 
-#%% Make figures
+#%% Figure setup
+mng = plt.get_current_fig_manager()
+mng.full_screen_toggle()
 plt.show() 
+
+#%% Make snowshoes prob by peak figure 
+plt.figure()
 peak_prob.sort_values(by=['snowshoes'],inplace=True)
 peak_prob.plot.bar()
-plt.xlabel('Peak')
-plt.ylabel('Probability of needing snowshoes')
+fig = plt.gcf()
+ax = plt.gca()
+ax.legend_.remove()
+fig.set_size_inches(10, 5, forward=True)
+plt.xlabel('Mountain name',fontsize=12)
+plt.ylabel('Probability of needing snowshoes',fontsize=12)
 plt.legend('')
-plt.title('Probability of needing snowshoes during Jan, Feb and March')
+plt.title('Probability of needing snowshoes during Jan, Feb and March',fontsize=20)
+plt.ylim((0,1))
+plt.tight_layout()
 plt.savefig(r'C:\Users\Alex\Documents\GitHub\trail-conditions\reports\figures\prob_snowshoes_by_peak.svg')
 
 #%% 
 snowshoe_prob.plot.bar()
-plt.xlabel('Month')
-plt.ylabel('Probability of needing snowshoes')
+plt.xlabel('Month',fontsize=12)
+plt.ylabel('Probability of needing snowshoes',fontsize=12)
+plt.title('Probability of needing snowshoes',fontsize=20)
 plt.legend('')
-plt.title('Probability of needing snowshoes')
+fig.set_size_inches(10, 5, forward=True)
+plt.ylim((0,1))
+plt.tight_layout()
 plt.savefig(r'C:\Users\Alex\Documents\GitHub\trail-conditions\reports\figures\prob_snowshoes_by_month.svg')
