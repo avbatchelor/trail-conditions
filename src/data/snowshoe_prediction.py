@@ -132,7 +132,7 @@ for idx, mountain in mtn_list.mtn_tokens.iteritems():
 peak_list = class_df[['peak','snowshoes']].groupby(['peak']).count()
 
 #%% Make a dataframe just for snowshoe classification 
-class_df = reports_new[['clean_peak_names','month','snowshoes','four_footer']].copy()
+class_df = reports_new[['clean_peak_names','month','snowshoes','four_footer','datetime']].copy()
 class_df = class_df.loc[class_df.four_footer == 1]
 class_df.drop(columns='four_footer',inplace=True)
 class_df.rename(index=str, columns={"clean_peak_names": "peak"}, inplace=True)
