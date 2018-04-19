@@ -74,11 +74,12 @@ def compute_and_plot_confusion_matrix(y_test,y_pred,class_names):
   cnf_matrix = confusion_matrix(y_test, y_pred)
   np.set_printoptions(precision=2)
 
+  '''
   # Plot non-normalized confusion matrix
   plt.figure()
   plot_confusion_matrix(cnf_matrix, classes=class_names,
                         title='Confusion matrix, without normalization')
-
+  '''
   # Plot normalized confusion matrix
   plt.figure()
   plot_confusion_matrix(cnf_matrix, classes=class_names, normalize=True,

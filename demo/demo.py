@@ -62,7 +62,7 @@ def create_empty_df():
     df.set_index('entry_id',inplace=True)
     return df
 
-#%% 
+#%% Make dataframe
 def make_df(start_ind,end_ind):
     
     # Create empty dataframe 
@@ -120,7 +120,7 @@ def apply_plot_settings():
 def prep_for_model(df):
     
     # Drop datetime column
-    df.drop(columns = ['datetime'],inplace=True)
+    #df.drop(columns = ['datetime'],inplace=True)
     
     # Separate out snowshoes var 
     snowshoes = df.snowshoes.copy()
